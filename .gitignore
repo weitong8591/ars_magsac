@@ -1,0 +1,6 @@
+__pycache__/
+magsac/
+build/
+dist/
+init/init.egg-info/
+logs/
