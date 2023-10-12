@@ -69,7 +69,7 @@ for dataset in datasets:
 
 	testset_folder = opt.src_pth + dataset + '/' + data_folder
 	test_files = os.listdir(testset_folder)
-	
+
 	# load the model
 	model.load_state_dict(torch.load(model_file))
 	model = model.cuda()
@@ -137,8 +137,8 @@ for dataset in datasets:
 						float(im_size1[b][0]), float(im_size1[b][1]), float(im_size2[b][0]), float(im_size2[b][1]),
 						probabilities=weights,
 						use_magsac_plus_plus=True,
-						sigma_th = opt.threshold,  
-						sampler_id =  opt.sampler_id, 
+						sigma_th = opt.threshold,
+						sampler_id =  opt.sampler_id,
 						save_samples = False)
 						current_time = time.time()-start_time
 						ransac_time += current_time
@@ -150,16 +150,16 @@ for dataset in datasets:
 						float(im_size1[b][0]), float(im_size1[b][1]), float(im_size2[b][0]), float(im_size2[b][1]),
 						probabilities=weights,
 						use_magsac_plus_plus=True,
-						sigma_th = opt.threshold,  
-						sampler_id =  opt.sampler_id, 
+						sigma_th = opt.threshold,
+						sampler_id =  opt.sampler_id,
 						variance = opt.variance,
 						save_samples = False)
 						current_time = time.time() - start_time
 						ransac_time += current_time
-						
+
 
 					# count inlier number
-					incount = np.sum(mask) 
+					incount = np.sum(mask)
 					incount /= correspondences.size(2)
 
 					# for checking the success estimation
@@ -168,18 +168,18 @@ for dataset in datasets:
 					else:
 						# update gradients and inliers
 						if (opt.sampler_id == 1) or (opt.sampler_id == 4):
-							# update the inlier mask with orignal indices according to the sorted indices
+							# update the inlier mask with original indices according to the sorted indices
 							sorted_index = sorted_indices[mask]
 							inliers[0, sorted_index, 0] = 1
 						else:
 							inliers[0, :, 0] = mask
 
-					
+
 					# essential matrix from fundamental matrix (for evaluation via relative pose)
 					E = K2[b].numpy().T.dot(F.dot(K1[b].numpy()))
 					pts1 = correspondences[b,0:2].numpy()
 					pts2 = correspondences[b,2:4].numpy()
-					
+
 					# evaluation of F matrix via correspondences
 					valid, F1, epi_inliers, epi_error = util.f_error(pts1, pts2, F, gt_F[b].numpy(), 0.75)
 
@@ -193,7 +193,7 @@ for dataset in datasets:
 					else:
 						# F matrix evaluation failed (ground truth model had no inliers)
 						invalid_pairs += 1
-						
+
 					# normalize correspondences using the calibration parameters for the calculation of pose errors
 					pts1_1 = cv2.undistortPoints(pts1.transpose(2, 1, 0), K1[b].numpy(), None)
 					pts2_2 = cv2.undistortPoints(pts2.transpose(2, 1, 0), K2[b].numpy(), None)
@@ -226,19 +226,19 @@ for dataset in datasets:
 					else:
 						start_time = time.time()
 						E, mask, samples = pymagsac.findEssentialMatrix(
-						np.ascontiguousarray(pts1), np.ascontiguousarray(pts2), 
-						K1[b].numpy(), K2[b].numpy(), 
+						np.ascontiguousarray(pts1), np.ascontiguousarray(pts2),
+						K1[b].numpy(), K2[b].numpy(),
 						float(im_size1[b][0]), float(im_size1[b][1]), float(im_size2[b][0]), float(im_size2[b][1]),
 						probabilities=weights,
 						variance = opt.variance,
-						use_magsac_plus_plus=True, 
-						sigma_th=opt.threshold,  
-						sampler_id=opt.sampler_id, 
+						use_magsac_plus_plus=True,
+						sigma_th=opt.threshold,
+						sampler_id=opt.sampler_id,
 						save_samples = False)
 						ransac_time += time.time()-start_time
 
 					# count inlier number
-					incount = np.sum(mask) 
+					incount = np.sum(mask)
 					#print(incount)
 					incount /= correspondences.size(2)
 
@@ -247,19 +247,19 @@ for dataset in datasets:
 					else:
 						# update gradients and inliers
 						if (opt.sampler_id == 1) or (opt.sampler_id == 4):
-							# update the inlier mask with orignal indices according to the sorted indices
+							# update the inlier mask with original indices according to the sorted indices
 							sorted_index = sorted_indices[mask]
 							inliers[0, sorted_index, 0] = 1
 						else:
 							inliers[0, :, 0] = mask
-					
+
 					# pts for recovering the pose
 					pts1 = correspondences[b,0:2].numpy()
 					pts2 = correspondences[b,2:4].numpy()
-					
+
 					pts1_1 = pts1.transpose(2, 1, 0)
 					pts2_2 = pts2.transpose(2, 1, 0)
-					
+
 				inliers = inliers.byte().numpy().ravel()
 
 				K = np.eye(3)
@@ -274,7 +274,7 @@ for dataset in datasets:
 
 
 			avg_ransac_time += ransac_time / opt.batchsize
-			
+
 			avg_counter += 1
 	print(avg_counter)
 	print("\nAvg. Model Time: %dms" % (avg_model_time / avg_counter*1000+0.00000001))
@@ -319,5 +319,3 @@ for dataset in datasets:
 		f.write('%f %f %f %dms' % (AUC[0], AUC[1], AUC[2], (avg_ransac_time / avg_counter*1000)))
 		if opt.fmat and len(epi_errors) > 0: f.write(' %f %f %f %f %f' % (avg_F1, avg_inliers, mean_epi_err, median_epi_err, avg_ransac_time))
 		f.write('\n')
-		
-

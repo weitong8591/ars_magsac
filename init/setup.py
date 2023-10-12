@@ -10,9 +10,9 @@ conda_env = os.environ['CONDA_PREFIX']
 
 if len(conda_env) > 0 and len(opencv_inc_dir) == 0 and len(opencv_lib_dir) == 0:
 	print("Detected active conda environment:", conda_env)
-	
-	opencv_inc_dir = conda_env + '/include' 
-	opencv_lib_dir = conda_env + '/lib' 
+
+	opencv_inc_dir = conda_env + '/include'
+	opencv_lib_dir = conda_env + '/lib'
 
 	print("Assuming OpenCV dependencies in:")
 	print(opencv_inc_dir)
@@ -34,5 +34,5 @@ setup(
 		library_dirs=[opencv_lib_dir],
 		libraries=['opencv_core','opencv_calib3d'],
 		extra_compile_args=['-fopenmp']
-		)],		
+		)],
 	cmdclass={'build_ext': BuildExtension})

@@ -41,16 +41,10 @@ class GCN_Block(nn.Module):
         return out
 
 class GNNet(nn.Module):
-	'''
-	"Learning to Find Good Correspondences"
-	Yi, Trulls, Ono, Lepetit, Salzmann, Fua
-	CVPR 2018
-	'''
+	""""Learning to Find Good Correspondences" Yi, Trulls, Ono, Lepetit, Salzmann, Fua CVPR 2018."""
 
 	def __init__(self, blocks):
-		'''
-		Constructor.
-		'''
+		"""Constructor."""
 		super(GNNet, self).__init__()
 
 		# network takes 5 inputs per correspondence: 2D point in img1, 2D point in img2, and 1D side information like a matching ratio
@@ -64,7 +58,7 @@ class GNNet(nn.Module):
 		for i in range(0, blocks):
 			self.res_blocks.append((
 				nn.Conv2d(128, 128, 1, 1, 0),
-				nn.BatchNorm2d(128),	
+				nn.BatchNorm2d(128),
 				nn.Conv2d(128, 128, 1, 1, 0),
 				nn.BatchNorm2d(128),
 				))
@@ -97,16 +91,14 @@ class GNNet(nn.Module):
 		# 	super(CNNet, self).add_module(str(i) + 's3', r[3])
 
 	def forward(self, inputs):
-		'''
-		Forward pass, return log probabilities over correspondences.
+		"""Forward pass, return log probabilities over correspondences.
 
-		inputs -- 4D data tensor (BxCxNx1)
-		B -> batch size (multiple image pairs)
-		C -> 5+2 values (2D coordinate + 2D coordinate + 1D side information + 1D feature size difference + 1D feature orientation diff)
-		N -> number of correspondences
-		1 -> dummy dimension
-		
-		'''
+  inputs -- 4D data tensor (BxCxNx1)
+  B -> batch size (multiple image pairs)
+  C -> 5+2 values (2D coordinate + 2D coordinate + 1D side information + 1D feature size difference + 1D feature orientation diff)
+  N -> number of correspondences
+  1 -> dummy dimension
+  """
 		batch_size = inputs.size(0)
 		data_size = inputs.size(2) # number of correspondences
 
@@ -123,7 +115,7 @@ class GNNet(nn.Module):
 		#w1 = self.linear_1(out).view(B, -1)
 		for r in self.res_blocks:
 			res = x
-			x = F.relu(r[1](F.instance_norm(r[0](x)))) 
+			x = F.relu(r[1](F.instance_norm(r[0](x))))
 			x = F.relu(r[3](F.instance_norm(r[2](x))))
 			x = x + res
 

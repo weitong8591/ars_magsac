@@ -11,11 +11,11 @@
 
 from NG-RANSAC
 * @brief Calculate a ground truth probability distribution for a set of correspondences.
-* 
-* Method uses using the distance to a ground truth model which 
+*
+* Method uses using the distance to a ground truth model which
 * can be an essential matrix or a fundamental matrix.
 * For more information, see paper supplement A, Eq. 12
-* 
+*
 * @param correspondences 3-dim float tensor, dim 1: xy coordinates of left and right image (normalized by calibration parameters when used for an essential matrix, i.e. f_mat=false), dim 2: correspondences, dim 3: dummy dimension
 * @param out_probabilities 3-dim float tensor, dim 1: ground truth probability, dim 2: correspondences, dim 3: dummy dimension
 * @param gt_model 2-dim float tensor, ground truth model, essential matrix or fundamental matrix
@@ -37,14 +37,14 @@ void gtdist(
 	int cCount = out_probabilities.size(1); // number of correspondences
 
 	// access to PyTorch tensors
-	at::TensorAccessor<float, 3> cAccess = correspondences.accessor<float, 3>();		
-	at::TensorAccessor<float, 3> pAccess = out_probabilities.accessor<float, 3>();		
-	at::TensorAccessor<float, 2> MAccess = gt_model.accessor<float, 2>();		
+	at::TensorAccessor<float, 3> cAccess = correspondences.accessor<float, 3>();
+	at::TensorAccessor<float, 3> pAccess = out_probabilities.accessor<float, 3>();
+	at::TensorAccessor<float, 2> MAccess = gt_model.accessor<float, 2>();
 
 	// read correspondences
 	std::vector<cv::Point2d> pts1, pts2; // coordinates in image 1 and 2
 
-	for(int c = 0; c < cCount; c++)	
+	for(int c = 0; c < cCount; c++)
 	{
 		pts1.push_back(cv::Point2d(cAccess[0][c][0], cAccess[1][c][0]));
 		pts2.push_back(cv::Point2d(cAccess[2][c][0], cAccess[3][c][0]));
@@ -84,11 +84,11 @@ void gtdist(
 
 	// write out results
 	for(int j = 0; j < gtErr.rows; j++)
-		pAccess[0][j][0] = weights[j] / probSum;	
+		pAccess[0][j][0] = weights[j] / probSum;
 }
 
 
 // register C++ functions for use in Python
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
-	m.def("gtdist", &gtdist, "Ground truth distribution for intialization for essential matrix estimation.");
+	m.def("gtdist", &gtdist, "Ground truth distribution for initialization for essential matrix estimation.");
 }

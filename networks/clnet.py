@@ -130,10 +130,11 @@ class ResNet_Block(nn.Module):
         return torch.relu(out)
 
 class CLNet(nn.Module):
-    '''
-    Zhao, Chen, et al. "Progressive Correspondence Pruning by Consensus Learning."
-    Proceedings of the IEEE/CVF International Conference on Computer Vision. 2021.
-    '''
+    """Zhao, Chen, et al.
+
+    "Progressive Correspondence Pruning by Consensus Learning." Proceedings of the IEEE/CVF International Conference on
+    Computer Vision. 2021.
+    """
     def __init__(self):
         super(CLNet, self).__init__()
         # network takes 5 inputs per correspondence: 2D point in img1, 2D point in img2, and 1D side information like a matching ratio

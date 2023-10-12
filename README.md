@@ -20,7 +20,7 @@
 
 
 ## Introduction
-ARS-MAGSAC is a new learning-based robust estimator proposed for two-view epipolar geometry estimation. 
+ARS-MAGSAC is a new learning-based robust estimator proposed for two-view epipolar geometry estimation.
 We propose a new sampler guided by deep pirors, updates the inlier probabilties among RANASC iterations.
 The deep pirors are learned from the coordinates, side information (SNN ratio), scale and orientation features.
 
@@ -52,14 +52,14 @@ python setup.py install
 
 -------
 
-[images](images/) -- folder contains the images used for demo  
-[models](models/) -- folder includes the pretrained models, and initial trained model  
-[networks](networks/) -- folder contains possible training networks   
-[demo](demo.py) -- demo to try ARS-MAGSAC on examples   
-[train](train_pymagsac.py) -- main training    
-[init](init_pymagsac.py) -- initia trainiing  
-[test](test_pymagsac.py) -- batch testing of ARS-MAGSAC  
-[dataset](dataset.py) -- customized data loader  
+[images](images/) -- folder contains the images used for demo
+[models](models/) -- folder includes the pretrained models, and initial trained model
+[networks](networks/) -- folder contains possible training networks
+[demo](demo.py) -- demo to try ARS-MAGSAC on examples
+[train](train_pymagsac.py) -- main training
+[init](init_pymagsac.py) -- initia trainiing
+[test](test_pymagsac.py) -- batch testing of ARS-MAGSAC
+[dataset](dataset.py) -- customized data loader
 [utils](util.py) -- utility functions and parameters.
 
 -------
@@ -71,12 +71,12 @@ Each data file structure is as follows,
 ```
 traindata/<dataset_name>/<data_variant>/<image_pair>.npy
 ```
-The datasets are dumped and saved in 'npy'. Each contains the coordinates, SNN ratios, image sizes, calibration matrices, ground-truth rotation matrices, 
+The datasets are dumped and saved in 'npy'. Each contains the coordinates, SNN ratios, image sizes, calibration matrices, ground-truth rotation matrices,
 the scales and orientations from SIFT features.
 ```python
 [pts1, pts2, sideinfo, img1size, img2size, K1, K2, R, t, size1, size2, ang1, ang2]
 ```
-PhotoTourism is dumped by [prepare_data](prepare_data/prepare_data_st.py), partially borrrowed 
+PhotoTourism is dumped by [prepare_data](prepare_data/prepare_data_st.py), partially borrrowed
 from [NG-RANSAC](https://github.com/vislearn/ngransac) and [Ransac-Tourial-data](https://github.com/ducha-aiki/ransac-tutorial-2020-data).
 
 ## Train ARS-MAGSAC
@@ -84,7 +84,7 @@ from [NG-RANSAC](https://github.com/vislearn/ngransac) and [Ransac-Tourial-data]
 ```bash
 python train_pymagsac.py -id 4 -m models/st_peters_square/weights_init_E_rs_r0.80_.net -rs -r 0.8 -t 0.75 -w1 4 -w3 6 -l all  -ds st_peters_square
 ```
-The proposed sampler is used by set "-id 4", and the proposed affine loss is used 
+The proposed sampler is used by set "-id 4", and the proposed affine loss is used
 when "-l all", and set w3 and w4 as non-zero values. Fundamental matrices are estimated when setting "-fmat" as True.
 
 You can either train our method on [initial trained model](models/st_peters_square/weights_init_E_rs_r0.80_.net) or use the following steps to do the initial training on KL-divergence.
@@ -118,7 +118,7 @@ The evaluation can be performed as,
 ```bash
 python test_pymagsac.py -id 4 -m models/st_peters_square/weights_e2e_pymagsac_10_E_rs_r0.80_t0.75_w1_0.10_w3_0.60_w4_0.30_.net -rs -r 0.8 -t 2 -v test -w1 4 -w3 6 -bm -var 0.99
 ```
-AUC scores for essential matrix estimation on PhotoTourism over 5, 10, 20 degrees of thresholds, and the pose errors and run time will ve returned. 
+AUC scores for essential matrix estimation on PhotoTourism over 5, 10, 20 degrees of thresholds, and the pose errors and run time will ve returned.
 F1 scores and epipolar geometry errors are used for evaluating fundamental matrix estimation.
 
 ## Demo
@@ -137,7 +137,7 @@ python demo.py -m models/st_peters_square/weights_e2e_pymagsac_10_E_rs_r0.80_t0.
 Check more details in the [paper](https://arxiv.org/abs/2212.13185), and cite it as:
 ```
 @misc{wei2023adaptive,
-      title={Adaptive Reordering Sampler with Neurally Guided MAGSAC}, 
+      title={Adaptive Reordering Sampler with Neurally Guided MAGSAC},
       author={Tong Wei and Jiri Matas and Daniel Barath},
       year={2023},
       eprint={2111.14093},

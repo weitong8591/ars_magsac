@@ -75,11 +75,11 @@ if not os.path.isdir(model_dir): os.makedirs(model_dir)
 
 writer = SummaryWriter(log_dir +'vision_init', comment="model_vis")
 
-# in the initalization we optimize the KLDiv of the predicted distribution and the target distgribution (see NG-RANSAC supplement A, Eq. 12)
+# in the initialization we optimize the KLDiv of the predicted distribution and the target distgribution (see NG-RANSAC supplement A, Eq. 12)
 distLoss = torch.nn.KLDivLoss(reduction='sum')
 
 # main training loop
-for epoch in range(0, opt.epochs):	
+for epoch in range(0, opt.epochs):
 
 	print("=== Starting Epoch", epoch, "==================================")
 
@@ -88,14 +88,14 @@ for epoch in range(0, opt.epochs):
 
 	# main training loop in the current epoch
 	for correspondences, gt_F, gt_E, gt_R, gt_t, K1, K2, im_size1, im_size2 in trainset_loader:
-	
+
 		correspondences = correspondences.float()
 		log_probs = model(correspondences.cuda())
 		probs = torch.exp(log_probs).cpu()
 		target_probs = torch.zeros(probs.size())
 		#loop over batch
 		for b in range(correspondences.size(0)):
-			
+
 			if opt.fmat:
 
 				# === CASE FUNDAMENTAL MATRIX =========================================
@@ -109,14 +109,14 @@ for epoch in range(0, opt.epochs):
 				# === CASE ESSENTIAL MATRIX =========================================
 
 				init.gtdist(correspondences[b], target_probs[b], gt_E[b].float(), opt.threshold, False)
-			
+
 		log_probs.squeeze_()
 		target_probs.squeeze_()
 
 		# KL divergence
-		loss = distLoss(log_probs, target_probs.cuda()) / correspondences.size(0) 
+		loss = distLoss(log_probs, target_probs.cuda()) / correspondences.size(0)
 
-		# update model(gradient decending)
+		# update model(gradient descending)
 		loss.backward()
 		optimizer.step() #update parameterstorch.utils.data.DataLoader
 		optimizer.zero_grad() #gradient = 0

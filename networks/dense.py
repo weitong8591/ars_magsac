@@ -71,16 +71,15 @@ class _Transition(nn.Sequential):
         self.add_module('pool', nn.AvgPool2d(kernel_size=2, stride=2))
 
 class DenseNet(nn.Module):
-  '''
-  Huang, Gao, et al. "Densely connected convolutional networks."
-  Proceedings of the IEEE conference on computer vision and pattern recognition. 2017.
+  """Huang, Gao, et al.
+
+  "Densely connected convolutional networks." Proceedings of the IEEE conference on computer vision and pattern
+  recognition. 2017.
   https://github.com/pytorch/vision/blob/main/torchvision/models/densenet.py
-  '''
+  """
 
   def __init__(self, blocks=16, growth_rate=12, block_config=(16, 16, 16), compression=0.5, num_init_features=24, bn_size=4, drop_rate=0, efficient=False):
-    '''
-    Constructor.
-    '''
+    """Constructor."""
     super(DenseNet, self).__init__()
     self.p_in = nn.Conv2d(7, 128, 1, 1, 0)
 
@@ -112,16 +111,16 @@ class DenseNet(nn.Module):
 
   def forward(self, inputs):
     '''
-    Forward pass, return log probabilities over correspondences   
+    Forward pass, return log probabilities over correspondences
     inputs -- 4D data tensor (BxCxNx1)
     B -> batch size (multiple image pairs)
     C -> 5 values (2D coordinate + 2D coordinate + 1D side information)
     N -> number of correspondences
     1 -> dummy dimension
-		
-    '''    
+
+    '''
     batch_size = inputs.size(0)
-    data_size = inputs.size(2) # number of correspondence   
+    data_size = inputs.size(2) # number of correspondence
     x = inputs
     x = F.relu(self.p_in(x))
     features = self.features(x)
@@ -136,6 +135,6 @@ class DenseNet(nn.Module):
     normalizer = torch.logsumexp(log_probs, dim=1)
     normalizer = normalizer.unsqueeze(1).expand(-1, data_size)
     log_probs = log_probs - normalizer
-    log_probs = log_probs.view(batch_size, 1, data_size, 1) 
-                               
+    log_probs = log_probs.view(batch_size, 1, data_size, 1)
+
     return log_probs

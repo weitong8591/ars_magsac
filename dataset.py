@@ -34,7 +34,7 @@ class SparseDataset(Dataset):
 
 		# correspondence coordinates and matching ratios (side information)
 		pts1, pts2, ratios = data[0], data[1], data[2]
-	
+
 		# image sizes
 		im_size1, im_size2 = torch.from_numpy(np.asarray(data[3])), torch.from_numpy(np.asarray(data[4]))
 		# image calibration parameters
@@ -121,5 +121,3 @@ class SparseDataset(Dataset):
 
 		return correspondences, gt_F, gt_E, gt_R, gt_t, K1, K2, im_size1, im_size2
 		return correspondences, gt_F, gt_E, gt_R, gt_t, K1, K2, im_size1, im_size2
-
-

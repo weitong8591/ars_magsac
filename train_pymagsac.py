@@ -174,7 +174,7 @@ for epoch in range(0, opt.epochs):
 								sample = sorted_indices[sample]
 								gradients[0, sample, 0] += 1
 
-							# update the inlier mask with orignal indices according to the sorted indices
+							# update the inlier mask with original indices according to the sorted indices
 							sorted_index = sorted_indices[mask]
 							inliers[0, sorted_index, 0] = 1
 
@@ -187,7 +187,7 @@ for epoch in range(0, opt.epochs):
 					pts1 = correspondences[b, 0:2].numpy()
 					pts2 = correspondences[b, 2:4].numpy()
 
-					# fetch the orientation and sacle info
+					# fetch the orientation and scale info
 					scale_ratio = correspondences[b, 5].squeeze().numpy().T
 					ang = correspondences[b, 6].squeeze().numpy().T
 
@@ -271,7 +271,7 @@ for epoch in range(0, opt.epochs):
 								sample = sorted_indices[sample]
 								gradients[0, sample, 0] += 1
 
-							# update the inlier mask with orignal indices according to the sorted indices
+							# update the inlier mask with original indices according to the sorted indices
 							sorted_index = sorted_indices[mask]
 							inliers[0, sorted_index, 0] = 1
 
@@ -283,7 +283,7 @@ for epoch in range(0, opt.epochs):
 					pts1 = correspondences[b, 0:2].numpy()
 					pts2 = correspondences[b, 2:4].numpy()
 
-					# pick up the orientation and sacle info, then normalize them
+					# pick up the orientation and scale info, then normalize them
 					scale_ratio = correspondences[b, 5].squeeze().numpy().T
 					ang = correspondences[b, 6].squeeze().numpy().T
 

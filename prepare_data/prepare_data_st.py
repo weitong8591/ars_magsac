@@ -46,7 +46,7 @@ T = load_h5(f'{DIR}/{seq}/T.h5')
 detector = cv2.SIFT_create(opt.nfeatures, contrastThreshold = 1e-5)
 count = 0
 for k,F in F_gt.items():
-	
+
 
 	m = matches[k]
 	ms = matches_scores[k]
@@ -140,4 +140,3 @@ for k,F in F_gt.items():
 	count += 1
 	if (count > opt.pairnum):
 		break
-

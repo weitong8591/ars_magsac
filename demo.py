@@ -20,10 +20,10 @@ parser.add_argument('--outimg', '-out', default='images/comparison.jpg',
 	help='images will store a matching image under this file name')
 
 
-parser.add_argument('--focallength1', '-fl1', type=float, default=900, 
+parser.add_argument('--focallength1', '-fl1', type=float, default=900,
 	help='focal length of image 1 (only used when fitting the essential matrix)')
 
-parser.add_argument('--focallength2', '-fl2', type=float, default=900, 
+parser.add_argument('--focallength2', '-fl2', type=float, default=900,
 	help='focal length of image 2 (only used when fitting the essential matrix)')
 
 
@@ -51,7 +51,7 @@ else:
 	else:
 		detector = cv2.xfeatures2d.SIFT_create()
 
-# loading neural guidence network#
+# loading neural guidance network#
 model_file = opt.model
 if len(model_file) == 0:
 	model_file = util.create_session_string('e2e', opt.fmat, opt.orb, opt.rootsift, opt.ratio, opt.session)
@@ -121,9 +121,9 @@ if opt.ratio < 1.0:
 for (m,n) in matches:
 	m_draw.append(m)
 	if m.distance < 0.8*n.distance: # apply Lowe's ratio filter
-		
+
 		good_matches.append(m)
-		
+
 		pts2.append(kp2[m.trainIdx].pt)
 		pts1.append(kp1[m.queryIdx].pt)
 

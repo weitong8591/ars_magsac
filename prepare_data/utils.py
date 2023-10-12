@@ -46,7 +46,7 @@ def norm_kp(kpt, K):
     return kpt
 
 def savepklz(data_to_dump, dump_file_full_name, force_run=False):
-    ''' Saves a pickle object and gzip it '''
+    """Saves a pickle object and gzip it."""
 
     if not force_run:
         raise RuntimeError("This function should no longer be used!")
@@ -56,7 +56,7 @@ def savepklz(data_to_dump, dump_file_full_name, force_run=False):
 
 
 def loadpklz(dump_file_full_name, force_run=False):
-    ''' Loads a gziped pickle object '''
+    """Loads a gzipped pickle object."""
 
     if not force_run:
         raise RuntimeError("This function should no longer be used!")
@@ -68,7 +68,7 @@ def loadpklz(dump_file_full_name, force_run=False):
 
 
 def saveh5(dict_to_dump, dump_file_full_name):
-    ''' Saves a dictionary as h5 file '''
+    """Saves a dictionary as h5 file."""
 
     with h5py.File(dump_file_full_name, 'w') as h5file:
         if isinstance(dict_to_dump, list):
@@ -80,7 +80,7 @@ def saveh5(dict_to_dump, dump_file_full_name):
 
 
 def writeh5(dict_to_dump, h5node):
-    ''' Recursive function to write dictionary to h5 nodes '''
+    """Recursive function to write dictionary to h5 nodes."""
 
     for _key in dict_to_dump.keys():
         if isinstance(dict_to_dump[_key], dict):
@@ -92,7 +92,7 @@ def writeh5(dict_to_dump, h5node):
 
 
 def loadh5(dump_file_full_name):
-    ''' Loads a h5 file as dictionary '''
+    """Loads a h5 file as dictionary."""
 
     try:
         with h5py.File(dump_file_full_name, 'r') as h5file:
@@ -105,7 +105,7 @@ def loadh5(dump_file_full_name):
 
 
 def readh5(h5node):
-    ''' Recursive function to read h5 nodes as dictionary '''
+    """Recursive function to read h5 nodes as dictionary."""
 
     dict_from_file = {}
     for _key in h5node.keys():

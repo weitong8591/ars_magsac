@@ -7,15 +7,15 @@ import argparse
 def normalize_pts(pts, im_size):
     """Normalize image coordinate using the image size.
 
-	Pre-processing of correspondences before passing them to the network to be 
-	independent of image resolution.
-	Re-scales points such that max image dimension goes from -0.5 to 0.5.
-	In-place operation.
+    Pre-processing of correspondences before passing them to the network to be
+    independent of image resolution.
+    Re-scales points such that max image dimension goes from -0.5 to 0.5.
+    In-place operation.
 
-	Keyword arguments:
-	pts -- 3-dim array conainting x and y coordinates in the last dimension, first dimension should have size 1.
-	im_size -- image height and width
-	"""
+    Keyword arguments:
+    pts -- 3-dim array conainting x and y coordinates in the last dimension, first dimension should have size 1.
+    im_size -- image height and width
+    """
 
     pts[0, :, 0] -= float(im_size[1]) / 2
     pts[0, :, 1] -= float(im_size[0]) / 2
@@ -25,12 +25,12 @@ def normalize_pts(pts, im_size):
 def denormalize_pts(pts, im_size):
     """Undo image coordinate normalization using the image size.
 
-	In-place operation.
+    In-place operation.
 
-	Keyword arguments:
-	pts -- N-dim array conainting x and y coordinates in the first dimension
-	im_size -- image height and width
-	"""
+    Keyword arguments:
+    pts -- N-dim array conainting x and y coordinates in the first dimension
+    im_size -- image height and width
+    """
     pts *= max(im_size)
     pts[0] += im_size[1] / 2
     pts[1] += im_size[0] / 2
@@ -39,13 +39,13 @@ def denormalize_pts(pts, im_size):
 def AUC(losses, thresholds, binsize):
     """Compute the AUC up to a set of error thresholds.
 
-	Return mutliple AUC corresponding to multiple threshold provided.
+    Return multiple AUC corresponding to multiple threshold provided.
 
-	Keyword arguments:
-	losses -- list of losses which the AUC should be calculated for
-	thresholds -- list of threshold values up to which the AUC should be calculated
-	binsize -- bin size to be used fo the cumulative histogram when calculating the AUC, the finer the more accurate
-	"""
+    Keyword arguments:
+    losses -- list of losses which the AUC should be calculated for
+    thresholds -- list of threshold values up to which the AUC should be calculated
+    binsize -- bin size to be used for the cumulative histogram when calculating the AUC, the finer the more accurate
+    """
 
     bin_num = int(max(thresholds) / binsize)
     bins = np.arange(bin_num + 1) * binsize
@@ -61,13 +61,12 @@ def AUC(losses, thresholds, binsize):
 def pose_error(R, gt_R, t, gt_t):
     """Compute the angular error between two rotation matrices and two translation vectors.
 
-
-	Keyword arguments:
-	R -- 2D numpy array containing an estimated rotation
-	gt_R -- 2D numpy array containing the corresponding ground truth rotation
-	t -- 2D numpy array containing an estimated translation as column
-	gt_t -- 2D numpy array containing the corresponding ground truth translation
-	"""
+    Keyword arguments:
+    R -- 2D numpy array containing an estimated rotation
+    gt_R -- 2D numpy array containing the corresponding ground truth rotation
+    t -- 2D numpy array containing an estimated translation as column
+    gt_t -- 2D numpy array containing the corresponding ground truth translation
+    """
 
     # calculate angle between provided rotations
     dR = np.matmul(R, np.transpose(gt_R))
@@ -89,21 +88,21 @@ def pose_error(R, gt_R, t, gt_t):
 def f_error(pts1, pts2, F, gt_F, threshold):
     """Compute multiple evaluaton measures for a fundamental matrix.
 
-	Return (False, 0, 0, 0) if the evaluation fails due to not finding inliers for the ground truth model, 
-	else return() True, F1 score, % inliers, mean epipolar error of inliers).
+    Return (False, 0, 0, 0) if the evaluation fails due to not finding inliers for the ground truth model,
+    else return() True, F1 score, % inliers, mean epipolar error of inliers).
 
-	Follows the evaluation procedure in:
-	"Deep Fundamental Matrix Estimation"
-	Ranftl and Koltun
-	ECCV 2018
+    Follows the evaluation procedure in:
+    "Deep Fundamental Matrix Estimation"
+    Ranftl and Koltun
+    ECCV 2018
 
-	Keyword arguments:
-	pts1 -- 3D numpy array containing the feature coordinates in image 1, dim 1: x and y coordinate, dim 2: correspondences, dim 3: dummy dimension
-	pts2 -- 3D numpy array containing the feature coordinates in image 2, dim 1: x and y coordinate, dim 2: correspondences, dim 3: dummy dimension
-	F -- 2D numpy array containing an estimated fundamental matrix
-	gt_F -- 2D numpy array containing the corresponding ground truth fundamental matrix
-	threshold -- inlier threshold for the epipolar error in pixels
-	"""
+    Keyword arguments:
+    pts1 -- 3D numpy array containing the feature coordinates in image 1, dim 1: x and y coordinate, dim 2: correspondences, dim 3: dummy dimension
+    pts2 -- 3D numpy array containing the feature coordinates in image 2, dim 1: x and y coordinate, dim 2: correspondences, dim 3: dummy dimension
+    F -- 2D numpy array containing an estimated fundamental matrix
+    gt_F -- 2D numpy array containing the corresponding ground truth fundamental matrix
+    threshold -- inlier threshold for the epipolar error in pixels
+    """
 
     EPS = 0.00000000001
     num_pts = pts1.shape[1]
@@ -206,14 +205,14 @@ def scale_error(pts1, pts2, M, scale_ratio, b):
 def rootSift(desc):
     """Apply root sift normalization to a given set of descriptors.
 
-	See details in:
-	"Three Things Everyone Should Know to Improve Object Retrieval"
-	Arandjelovic and Zisserman
-	CVPR 2012
+    See details in:
+    "Three Things Everyone Should Know to Improve Object Retrieval"
+    Arandjelovic and Zisserman
+    CVPR 2012
 
-	Keyword arguments:
-	desc -- 2D numpy array containing the descriptors in its rows
-	"""
+    Keyword arguments:
+    desc -- 2D numpy array containing the descriptors in its rows
+    """
 
     desc_norm = np.linalg.norm(desc, ord=1, axis=1)
     desc_norm += 1  # avoid division by zero
@@ -227,9 +226,9 @@ def rootSift(desc):
 def create_parser(description):
     """Create a default command line parser with the most common options.
 
-	Keyword arguments:
-	description -- description of the main functionality of a script/program
-	"""
+    Keyword arguments:
+    description -- description of the main functionality of a script/program
+    """
 
     parser = argparse.ArgumentParser(
         description=description,
@@ -297,9 +296,9 @@ def create_parser(description):
 
     parser.add_argument('--loss', '-l', choices=['inliers', 'f1', 'all', 'epi'], default='all',
                         help='Loss to use as a reward signal; '
-                             '"all" means using wighted sum of errors, '
+                             '"all" means using weighted sum of errors, '
                              'e.g., w1=1 means only pose rror, max of translational and rotational angle error, '
-                             "with non-zeero w3, w4 means combing our proposed affine  loss."
+                             "with non-zero w3, w4 means combing our proposed affine  loss."
                              '"inliers" maximizes the inlier count (self-supervised training), '
                              '"f1" is the alignment of estimated inliers and ground truth inliers (only for fundamental matrixes, '''
                              'init.e. -fmat), '
@@ -325,35 +324,35 @@ def create_parser(description):
 
     parser.add_argument('--sampler_id', '-id', type=int, default=1,
                         help='which sampler you use')
-                        
+
     parser.add_argument('--network', '-net', type=int, default=0,
                         help='which network you train on, 0--ResNet like NGRANSAC, 1--DenseNet, 2--CLNet, 3 ResNet+GNN')
-    
+
     parser.add_argument('--src_pth', '-src', default='traindata/',
                         help='source path of the correspondences')
 
     parser.add_argument('-img_pth', '-isrc', default='traindata/',
                         help='source path')
-    
-    parser.add_argument('--pairnum', '-pn', type=int, default=5000, 
+
+    parser.add_argument('--pairnum', '-pn', type=int, default=5000,
 	                    help='number of pairs you want to test')
-    
+
     return parser
 
 
 def create_session_string(prefix, network_id, sampler_id, epochs, fmat, orb, rootsift, ratio, session, w1, w2, w3, w4, threshold):
     """Create an identifier string from the most common parameter options.
 
-	Keyword arguments:
-	prefix -- custom string appended at the beginning of the session string
-	sampler_id -- the idddenticcation of which sample you use
-	epochs -- how many epochs you trained
-	fmat -- bool indicating whether fundamental matrices or essential matrices are estimated
-	orb -- bool indicating whether ORB features or SIFT features are used
-	rootsift -- bool indicating whether RootSIFT normalization is used
-	ratio -- threshold for Lowe's ratio filter
-	session -- custom string appended at the end of the session string
-	"""
+    Keyword arguments:
+    prefix -- custom string appended at the beginning of the session string
+    sampler_id -- the idddenticcation of which sample you use
+    epochs -- how many epochs you trained
+    fmat -- bool indicating whether fundamental matrices or essential matrices are estimated
+    orb -- bool indicating whether ORB features or SIFT features are used
+    rootsift -- bool indicating whether RootSIFT normalization is used
+    ratio -- threshold for Lowe's ratio filter
+    session -- custom string appended at the end of the session string
+    """
     session_string = prefix + '_'
     session_string += 'net_'+str(network_id) + '_'
     session_string += 'sampler_'+str(sampler_id) + '_'
