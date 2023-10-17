@@ -1,12 +1,14 @@
 
 # ARS-MAGSAC : Adaptive Reordering Sampler with Neurally Guided MAGSAC
->:newspaper: The code for ICCV 2023 paper, [Adaptive Reordering Sampler with Neurally Guided MAGSAC](https://arxiv.org/abs/2212.13185) (ARS-MAGSAC).
+>:newspaper: The code for ICCV 2023 paper, [Adaptive Reordering Sampler with Neurally Guided MAGSAC](https://openaccess.thecvf.com/content/ICCV2023/papers/Wei_Adaptive_Reordering_Sampler_with_Neurally_Guided_MAGSAC_ICCV_2023_paper.pdf) (ARS-MAGSAC).
 >
 >Tong Wei, Jiri Matas, Daniel Barath.
 
+>| [paper](https://openaccess.thecvf.com/content/ICCV2023/papers/Wei_Adaptive_Reordering_Sampler_with_Neurally_Guided_MAGSAC_ICCV_2023_paper.pdf) | [poster](https://cmp.felk.cvut.cz/~weitong/ars_magsac/poster_ars_magsac.pdf") | [arxiv](https://arxiv.org/abs/2212.13185)
+
 >:loudspeaker: The AR-Sampler can be easily tried in C++ repo of [MAGSAC++](http://github.com/danini/magsac) by choose the 4th option of sampler.
 
->:file_folder: Download the data from [ars_data](https://cmp.felk.cvut.cz/~weitong/ars_data.zip).
+>:file_folder: Download the data from [KITTI](https://cmp.felk.cvut.cz/~weitong/ars_magsac/KITTI.zip).
 
 
 - [Introduction](#introduction)
@@ -136,12 +138,10 @@ python demo.py -m models/st_peters_square/weights_e2e_pymagsac_10_E_rs_r0.80_t0.
 ##  Citation
 Check more details in the [paper](https://arxiv.org/abs/2212.13185), and cite it as:
 ```
-@misc{wei2023adaptive,
+@inproceedings{wei2023adaptive,
       title={Adaptive Reordering Sampler with Neurally Guided MAGSAC},
       author={Tong Wei and Jiri Matas and Daniel Barath},
       year={2023},
-      eprint={2111.14093},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
+      booktitle={ICCV}
 }
 ```
