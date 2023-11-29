@@ -47,9 +47,9 @@ else:
 	else:
 		print("Using SIFT.\n")
 	if opt.nfeatures > 0:
-		detector = cv2.xfeatures2d.SIFT_create(nfeatures=opt.nfeatures, contrastThreshold=1e-5)
+		detector = cv2.xfeatures2d.SIFT_create(nfeatures=opt.nfeatures, contrastThreshold=1e-5) if int(cv2.__version__[0]) == 3 else cv2.SIFT_create(nfeatures=opt.nfeatures, contrastThreshold=1e-5)
 	else:
-		detector = cv2.xfeatures2d.SIFT_create()
+		detector = cv2.xfeatures2d.SIFT_create() if int(cv2.__version__[0]) == 3 else cv2.SIFT_create()
 
 # loading neural guidance network#
 model_file = opt.model
@@ -168,8 +168,8 @@ else:
 	# === CASE ESSENTIAL MATRIX =========================================
 
 	# normalize key point coordinates when fitting the essential matrix
-	pts1 = cv2.undistortPoints(pts1, K1, None)
-	pts2 = cv2.undistortPoints(pts2, K2, None)
+	pts1 = cv2.undistortPoints(pts1, K1, None) if int(cv2.__version__[0]) == 3 else cv2.undistortPoints(pts1, K1, None).transpose(1, 0, 2)
+	pts2 = cv2.undistortPoints(pts2, K2, None) if int(cv2.__version__[0]) == 3 else cv2.undistortPoints(pts2, K2, None).transpose(1, 0, 2)
 
 	K = np.eye(3)
 
